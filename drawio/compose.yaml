@@ -1,0 +1,9 @@
+services:
+    drawio:
+        image: jgraph/drawio
+        ports:
+            - '8444:8444'
+            - '8079:8079'
+        container_name: drawio
+        tty: true
+        stdin_open: true

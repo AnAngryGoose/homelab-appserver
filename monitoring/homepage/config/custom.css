@@ -1,0 +1,156 @@
+/*==================================
+  1. FONT IMPORTS
+==================================*/
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&display=swap');
+
+/*==================================
+  2. CSS VARIABLES
+==================================*/
+:root {
+  --my-font: "Fira Mono", monospace;
+  
+  /* Gruvbox Dark Palette */
+  --gb-bg:       #1d2021;
+  --gb-card:     #32302f;
+  --gb-cream:    #ebdbb2; /* Main Text */
+  
+  /* Prism Accents */
+  --gb-yellow:   #fabd2f; /* Titles/Borders */
+  --gb-green:    #98971a; /* Headers */
+  --gb-purple:   #d3869b; /* Hovers */
+  --gb-blue:     #83a598; /* Meta/Inputs */
+  --gb-orange:   #fe8019; /* Icons */
+  --gb-red:      #fb4934; /* Alerts */
+  
+  /* Settings */
+  --border-width: 2px;
+  --border-radius: 6px; 
+}
+
+/*==================================
+  3. BASE STYLES
+==================================*/
+/* Apply background and font to the document root */
+body, html, #__next {
+  background-color: var(--gb-bg);
+  color: var(--gb-cream); /* Default text is Cream, not Yellow (better readability) */
+  font-family: var(--my-font);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Headers / Group Titles */
+h1, h2, h3, .group-title {
+  color: var(--gb-green);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/*==================================
+  4. CARDS (Services & Bookmarks)
+==================================*/
+/* Target the cards specifically */
+.services-item, 
+.bookmark-item, 
+.widget {
+  background-color: var(--gb-card);
+  border: var(--border-width) solid var(--gb-yellow);
+  border-radius: var(--border-radius);
+  box-shadow: 4px 4px 0px #1d2021; /* Hard shadow for "retro" feel */
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  color: var(--gb-cream);
+}
+
+/* Card Titles - Force Yellow */
+.services-item .text-base,
+.bookmark-item .text-base,
+.service-name {
+  color: var(--gb-yellow);
+  font-weight: 700;
+}
+
+/* Card Descriptions - Force Cream/Blue */
+.services-item .text-xs, 
+.service-description {
+  color: var(--gb-cream);
+  opacity: 0.8;
+}
+
+/* Hover Effects */
+.services-item:hover, 
+.bookmark-item:hover,
+.widget:hover {
+  border-color: var(--gb-purple);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--gb-purple);
+  z-index: 10;
+}
+
+/* Remove internal transparency/backgrounds */
+.services-item a, 
+.services-item div, 
+.widget div {
+   background: transparent;
+}
+
+/*==================================
+  5. UI COMPONENTS
+==================================*/
+/* Icons */
+.service-icon img, 
+.service-icon svg,
+.bookmark-icon img,
+.bookmark-icon svg {
+   /* filter: sepia(100%) hue-rotate(-30deg) saturate(300%); Trick to tint images orange */
+   color: var(--gb-cream);
+}
+
+/* Search Bar */
+input {
+  background-color: var(--gb-card);
+  border: 2px solid #3c3836;
+  color: var(--gb-cream);
+  font-family: var(--my-font);
+  border-radius: 20px;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--gb-orange);
+}
+
+input::placeholder {
+  color: var(--gb-blue);
+  opacity: 0.5;
+}
+
+
+/*top bar text color*/
+  .dark\:text-theme-200:is(.dark *), .dark\:text-theme-200\/50:is(.dark *) {
+    color: var(--gb-cream);
+  }
+
+/* contatier stat text */
+.text-center,
+span[class*="all"] { color: var(--gb-cream) !important; }
+
+/* ICONS AT TOP BAR */
+svg.w-5.h-5 {
+   color: var(--gb-yellow);
+}
+
+/*==================================
+  7. UTILITIES / FOOTER
+==================================*/
+footer, .settings-toggle {
+   display: none;
+}
+
+@media screen and (max-width: 768px) {
+  #myTab {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+}

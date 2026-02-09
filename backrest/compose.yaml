@@ -1,0 +1,28 @@
+### --- Backrest - Restic --- ### 
+# https://github.com/garethgeorge/backrest
+services:
+  backrest:
+    image: ghcr.io/garethgeorge/backrest:latest
+    container_name: backrest
+    hostname: backrest
+    volumes:
+      # Appdata mounts for backrest 
+      - ./backrest/data:/data
+      - ./backrest/config:/config
+      - ./backrest/cache:/cache
+      - ./backrest/tmp:/tmp
+      - ./backrest/rclone:/root/.config/rclone # Mount for rclone config (needed when using rclone remotes)
+      - ./backrest/ssh:/root/.ssh:ro # Mount SSH directory (needed when using SSH remotes)
+      # Mounts for backup data
+      - /opt/mkdocs:/mkdocs
+      - /opt/docker:/docker-mercury
+      - /mnt/appdata/backup:/repos     # Mount local repos (optional for remote storage)
+    environment:
+      - BACKREST_DATA=/data # appdata for running backrest
+      - BACKREST_CONFIG=/config/config.json 
+      - XDG_CACHE_HOME=/cache
+      - TMPDIR=/tmp
+      - TZ=America/Chicago
+    ports:
+      - "9898:9898"
+    restart: unless-stopped

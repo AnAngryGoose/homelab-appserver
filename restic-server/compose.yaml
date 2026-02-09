@@ -1,0 +1,23 @@
+services:
+  rest-server:
+    image: restic/rest-server:latest
+    container_name: restic_rest_server
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/data
+      - ./.htpasswd:/data/.htpasswd:ro
+    environment:
+      - OPTIONS=
+    command: []
+    
+    # Optional: Add resource limits
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '1.0'
+    #       memory: 1G
+    #     reservations:
+    #       cpus: '0.5'
+    #       memory: 512M

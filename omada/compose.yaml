@@ -1,0 +1,22 @@
+### Omada Controller - TP-Link / Omada network controller ###
+# https://github.com/mbentley/docker-omada-controller
+services:
+  omada-controller:
+    image: mbentley/omada-controller:latest
+    container_name: omada-controller
+    restart: always
+    network_mode: host
+    environment:
+      - MANAGE_HTTP_PORT=8088
+      - MANAGE_HTTPS_PORT=8043
+      - PORTAL_HTTP_PORT=8088
+      - PORTAL_HTTPS_PORT=8843
+      - SHOW_SERVER_LOGS=true
+      - SHOW_MONGODB_LOGS=false
+      - TZ=America/Chicago
+
+    volumes:   
+      - /mnt/appdata/omada/omada-data:/opt/tplink/EAPController/data
+      - /mnt/appdata/omada/omada-logs:/opt/tplink/EAPController/logs
+      - /mnt/appdata/omada/omada-work:/opt/tplink/EAPController/work
+

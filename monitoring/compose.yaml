@@ -1,0 +1,150 @@
+### System Monitoring and Docker Control ###
+
+services:
+  ### --- Homepage: Main dashboard --- ###
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest # https://github.com/gethomepage/homepage
+    container_name: homepage
+    restart: unless-stopped
+    environment:
+      # This is added to allow access and provide exception to only default values
+      - HOMEPAGE_ALLOWED_HOSTS=${HOMEPAGE_ALLOWED_HOSTS}
+      - PUID=1000
+      - PGID=988
+    env_file:
+      - .env
+    volumes:
+      # Socket binding (read-only): Lets Homepage widgets *see* container status
+      - /var/run/docker.sock:/var/run/docker.sock:ro 
+      - ./homepage/config:/app/config
+    ports:
+      - "3000:3000"
+    # Optional: If you have file permission issues with the config volume,
+    # uncomment the line below. Find your user/group ID with the `id` command.
+    # user: "1000:1000"
+
+  # --- Glances: System Monitor (The Backend for Homepage Widgets) ---
+  glances:
+    image: nicolargo/glances:latest # https://github.com/nicolargo/glances
+    container_name: glances
+    pid: host            # needed for accurate Process/CPU stats
+    network_mode: "host" # needed to accurately report network information
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - GLANCES_OPT=-w # Run in web server mode
+    ports:
+      - "61208:61208"
+    restart: unless-stopped
+
+
+  # --- Watchtower: Auto-Update Containers ---
+  # watchtower:
+  #   image: nickfedor/watchtower # https://github.com/nickfedor/watchtower
+  #   container_name: watchtower
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   environment:
+  #     - WATCHTOWER_CLEANUP=true       # Delete old images after update
+  #     - WATCHTOWER_POLL_INTERVAL=86400 # Check every 24 hours (seconds)
+  #     - WATCHTOWER_INCLUDE_STOPPED=true
+  #     ### 1. Enable Email Mode ###
+  #     - WATCHTOWER_NOTIFICATIONS=email
+  #     # 2. Who sends the email (Must match your Gmail user)
+  #     - WATCHTOWER_NOTIFICATION_EMAIL_FROM=${MYEMAIL}
+  #     # 3. Who receives the email (Can be the same address)
+  #     - WATCHTOWER_NOTIFICATION_EMAIL_TO=${MYEMAIL}
+  #     # 4. Gmail Server Settings (Standard)
+  #     - WATCHTOWER_NOTIFICATION_EMAIL_SERVER=smtp.gmail.com
+  #     - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT=587
+  #     - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_TLS_SKIP_VERIFY=false
+  #     # 5. Auth Credentials
+  #     - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER=${MYEMAIL}
+  #     - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD=${MYEMAILPASS}  # <-- Paste App Password Here
+  #     # 6. Optional: Rate limit emails (Delay in seconds)
+  #     - WATCHTOWER_NOTIFICATION_EMAIL_DELAY=2
+  #   restart: unless-stopped
+
+
+  # --- Dozzle: Real-time Log Viewer ---
+  dozzle:
+    image: amir20/dozzle:latest # https://github.com/amir20/dozzle
+    container_name: dozzle
+    command: --remote-agent 192.168.0.11:7007 # connect to remote agent
+    ports:
+      - "8081:8080" # Web UI on port 8081
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DOZZLE_LEVEL=info 
+    # networks: 
+    #   - proxy_net # to allow npm access (using container name only)
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "/dozzle", "healthcheck"]
+      interval: 5s
+      retries: 5
+      start_period: 5s
+      start_interval: 5s
+
+
+  # --- Uptime Kuma: Service Monitor ---
+  uptime-kuma:
+    image: louislam/uptime-kuma:2 # Latest version - https://github.com/louislam/uptime-kuma
+    container_name: uptime-kuma
+    # networks:
+    #   - proxy_net  # To access via NPM
+    volumes:
+      - ./uptime-kuma-data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - "3001:3001"
+    restart: unless-stopped
+
+
+### ------------------------------ ###
+### ------------ BESZEL ---------- ###
+### ------------------------------ ###
+
+
+  # --- BESZEL HUB (The Dashboard) ---
+  beszel-hub:
+    image: henrygd/beszel # https://github.com/henrygd/beszel
+    container_name: beszel-hub
+    # networks:
+    #   - proxy_net  # To access via NPM
+    ports:
+      - "8090:8090"   # Exposed locally for initial setup
+    volumes:
+      - ./beszel/hub-data:/beszel_data
+    restart: unless-stopped
+
+  # --- BESZEL AGENT (The Sensor) ---
+  beszel-agent:
+    image: henrygd/beszel-agent:alpine # https://github.com/henrygd/beszel
+    container_name: beszel-agent
+    restart: unless-stopped
+    network_mode: host  # CRITICAL: Must be on host to read actual CPU/Disk/Network
+    devices:
+      - /dev/sda:/dev/sda # Required for S.M.A.R.T. data
+      - /dev/nvme0n1:/dev/nvme0n1 # Required for NVMe S.M.A.R.T. data
+    cap_add:
+      - SYS_RAWIO # required for S.M.A.R.T. data
+      - SYS_ADMIN # required for NVMe S.M.A.R.T. data
+
+    volumes:
+      - ./beszel/agent-data:/var/lib/beszel-agent
+      - /var/run/docker.sock:/var/run/docker.sock:ro # To monitor other docker containers
+
+      # monitor other disks / partitions by mounting a folder in /extra-filesystems
+      # Mount must match labelling in /proc/diskstats
+      - /mnt/sda:/extra-filesystems/sda__appdata:ro
+      - /mnt/nvme0n1:/extra-filesystems/nvme0n1__rootdrive:ro
+    environment:
+      - PORT=45876
+      - KEY=${BESZEL_KEY} 
+      - HUB_URL=https://beszel.vanth.me
+      - TOKEN=${BESZEL_TOKEN} # permanent token generated from hub
+networks:
+  beszel_net:
+    driver: bridge

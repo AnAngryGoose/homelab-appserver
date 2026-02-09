@@ -1,0 +1,54 @@
+services:
+
+### --- IT Tools --- ### https://github.com/CorentinTh/it-tools
+  it-tools:
+    image: corentinth/it-tools:latest
+    container_name: it-tools
+    restart: unless-stopped
+    ports:
+      - "8071:80"  # Map host port 8080 to container port 80
+    # networks:
+    #   - proxy_net  # Add to your proxy network if using NPM or Homepage
+    # Optional: If you want to use the "My Tools" feature effectively across sessions,
+    # it uses browser local storage, so no volume is needed on the server side.
+
+
+### --- Bento PDF --- ### https://github.com/alam00000/bentopdf
+
+  bentopdf:
+    image: bentopdf/bentopdf-simple:latest
+    container_name: bentopdf
+    ports:
+      - '3005:8080'
+    restart: unless-stopped
+
+
+### --- ConvertX --- ### https://github.com/C4illin/ConvertX
+  convertx:
+    image: ghcr.io/c4illin/convertx
+    container_name: convertx
+    restart: unless-stopped
+    ports:
+      - "3002:3000"
+    environment:
+      - JWT_SECRET=${CXJWTTOKEN} # will use randomUUID() if unset
+      # - HTTP_ALLOWED=true # uncomment this if accessing it over a non-https connection
+    volumes:
+      - /mnt/appdata/convertx/data:/app/data # database files - SQLite 
+    networks:
+      - tunnel-net
+      
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TOKEN}
+    command: tunnel --no-autoupdate run
+    networks:
+      - tunnel-net
+      
+networks:
+  tunnel-net:
+    name: tunnel-net

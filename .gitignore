@@ -1,0 +1,60 @@
+# Ignore all environment files containing secrets
+**/.env
+**/.env.*
+komodo/compose.env
+
+# Ignore system junk
+.DS_Store
+Thumbs.db
+
+# Ignore large data directories if mapped here
+# (e.g. if you have a 'data' folder inside 'core')
+**/data/
+**/logs/
+**/log/
+
+# Ignore CouchDB ini file & data
+obsidian/couchdb-etc/*
+obsidian/couchdb-data/*
+
+
+# Recursively ignore any folder named .pastebin
+**/.pastebin
+
+# ignore testing folder
+/testing/
+
+# Ignore the Nginx Proxy Manager data folders
+**/npm/data
+**/npm/letsencrypt
+
+# Ignore Filebrowser database and settings
+filebrowser/config/config.yaml
+
+**/uptime_kuma_data
+
+# Ignore all HA logs/db 
+**/homeassistant
+**/mosquitto
+**/zigbee2mqtt
+
+#ignore obsidian db files
+**/couchdb-data
+**/couchdb-etc
+dashboard/homepage/config/output.txt
+
+#game servers
+/gameservers/*
+dashboard/beszel_agent_data/fingerprint
+
+# Ignore all Backrest config/db files
+backrest/backrest/config/config.json*
+backrest/backrest/**
+
+# ignore beszel data
+monitoring/beszel/agent-data/*
+monitoring/beszel/hub-data/*
+
+
+
+**/.htpasswd*

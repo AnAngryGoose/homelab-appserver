@@ -1,0 +1,23 @@
+services:
+  # --- NGINX PROXY MANAGER---
+
+  npm:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: npm
+    restart: unless-stopped
+    ports:
+      - "80:80"     # HTTP
+      - "81:81"     # Admin UI
+      - "443:443"   # HTTPS
+    environment:
+      DB_SQLITE_FILE: "/data/database.sqlite"
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+    # networks:
+      #- tunnel_net   # To talk to Cloudflare
+      # - proxy_net  # To talk to internal apps
+
+# networks:
+#   proxy_net:
+#     external: true
