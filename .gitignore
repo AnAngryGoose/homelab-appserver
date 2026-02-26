@@ -58,3 +58,6 @@ monitoring/beszel/hub-data/*
 
 
 **/.htpasswd*
+monitoring/uptime-kuma-data
+komodo/komodo/compose.env
+archived

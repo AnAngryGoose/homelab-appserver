@@ -12,10 +12,10 @@ services:
       - ./backrest/cache:/cache
       - ./backrest/tmp:/tmp
       - ./backrest/rclone:/root/.config/rclone # Mount for rclone config (needed when using rclone remotes)
-      - ./backrest/ssh:/root/.ssh:ro # Mount SSH directory (needed when using SSH remotes)
+      - ./backrest/ssh:/root/.ssh # Mount SSH directory (needed when using SSH remotes)
       # Mounts for backup data
       - /opt/mkdocs:/mkdocs
-      - /opt/docker:/docker-mercury
+      - /opt/docker:/docker-local-prod-deb-01
       - /mnt/appdata/backup:/repos     # Mount local repos (optional for remote storage)
     environment:
       - BACKREST_DATA=/data # appdata for running backrest

@@ -18,7 +18,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro 
       - ./homepage/config:/app/config
     ports:
-      - "3000:3000"
+      - "3010:3000"
     # Optional: If you have file permission issues with the config volume,
     # uncomment the line below. Find your user/group ID with the `id` command.
     # user: "1000:1000"
@@ -92,6 +92,8 @@ services:
   uptime-kuma:
     image: louislam/uptime-kuma:2 # Latest version - https://github.com/louislam/uptime-kuma
     container_name: uptime-kuma
+    dns:
+      - 9.9.9.9
     # networks:
     #   - proxy_net  # To access via NPM
     volumes:
@@ -107,7 +109,7 @@ services:
 ### ------------------------------ ###
 
 
-  # --- BESZEL HUB (The Dashboard) ---
+  # --- BESZEL HUB ---
   beszel-hub:
     image: henrygd/beszel # https://github.com/henrygd/beszel
     container_name: beszel-hub
@@ -115,11 +117,13 @@ services:
     #   - proxy_net  # To access via NPM
     ports:
       - "8090:8090"   # Exposed locally for initial setup
+    environment:
+      - APP_URL=https://beszel.vanth.me
     volumes:
       - ./beszel/hub-data:/beszel_data
     restart: unless-stopped
 
-  # --- BESZEL AGENT (The Sensor) ---
+  # --- BESZEL AGENT ---
   beszel-agent:
     image: henrygd/beszel-agent:alpine # https://github.com/henrygd/beszel
     container_name: beszel-agent
@@ -127,7 +131,7 @@ services:
     network_mode: host  # CRITICAL: Must be on host to read actual CPU/Disk/Network
     devices:
       - /dev/sda:/dev/sda # Required for S.M.A.R.T. data
-      - /dev/nvme0n1:/dev/nvme0n1 # Required for NVMe S.M.A.R.T. data
+      - /dev/nvme0:/dev/nvme0 # Required for NVMe S.M.A.R.T. data
     cap_add:
       - SYS_RAWIO # required for S.M.A.R.T. data
       - SYS_ADMIN # required for NVMe S.M.A.R.T. data

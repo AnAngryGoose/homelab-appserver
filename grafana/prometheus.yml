@@ -1,0 +1,23 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'prod-deb-01'
+    static_configs:
+      - targets: ['node-exporter:9100', 'cadvisor:8080']
+
+  - job_name: 'opnsense-api-metrics'
+    static_configs:
+      # Scrapes the Athennamind exporter container for API metrics (firewall rules, routing, VPNs)
+      - targets: ['opnsense-exporter:9200']
+
+  - job_name: 'opnsense-hardware'
+    static_configs:
+      # Scrapes the physical hardware metrics (CPU, RAM, Disk, Temps)
+      # Note: This requires the 'os-node_exporter' plugin to be installed via the OPNsense web GUI
+      - targets: ['192.168.0.1:9100']
+      
+  # Uncomment below once you install node-exporter on Jupiter
+  # - job_name: 'jupiter-nas'
+  #   static_configs:
+  #     - targets: ['192.168.X.X:9100']
