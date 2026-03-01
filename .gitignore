@@ -61,3 +61,4 @@ monitoring/beszel/hub-data/*
 monitoring/uptime-kuma-data
 komodo/komodo/compose.env
 archived
+vikunja/compose.yaml

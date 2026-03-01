@@ -85,6 +85,15 @@
             url: "http://prod-deb-01.internal:81"
             username: "{{HOMEPAGE_VAR_NPM_USER}}"
             password: "{{HOMEPAGE_VAR_NPM_PASS}}"
+    - Backrest:
+        icon: backrest.png
+        href: "http://backrest.{{HOMEPAGE_VAR_URLBASE}}"
+        description: Backup Manager
+        widget:
+            type: backrest
+            url: http://backrest.{{HOMEPAGE_VAR_URLBASE}}
+            # username: "{{HOMEPAGE_VAR_BACKREST_USER}}"
+            # password: "{{HOMEPAGE_VAR_BACKREST_PASS}}"
 # -------------------------
 # --- ROW 2: MONITORING ---
 # -------------------------
@@ -142,7 +151,7 @@
 # -------------------------
 - Networking:
     - OPNSense :
-        icon: omada.svg
+        icon: opnsense.svg
         href: "https://192.168.0.1:4043/"
         description: OPNSense 
         widget:
@@ -152,7 +161,7 @@
           password: "{{HOMEPAGE_VAR_OPNSENSE_PASS}}"
           wan: opt1 # optional, defaults to wan
     - Adguard Home:
-        icon: adguardhome.svg
+        icon: adguard.svg
         href: "http://{{HOMEPAGE_VAR_OPNSENSE_IP}}:3000"
         description: Adguard Home DNS * Ad Blocker 
         widget:
@@ -183,6 +192,15 @@
             deviceid: "{{HOMEPAGE_VAR_TAILSCALE_ID}}"
             key: "{{HOMEPAGE_VAR_TAILSCALE_KEY}}"
             fields: ["status", "last_seen"]
+    - Ntopng:
+        icon: ntopng.svg
+        href: "http://ntopng.{{HOMEPAGE_VAR_URLBASE}}"
+        description: Network Traffic Monitor
+        widget:
+            type: ntopng
+            url: "http://ntopng.{{HOMEPAGE_VAR_URLBASE}}"
+            username: "{{HOMEPAGE_VAR_NTOPNG_USER}}"
+            password: "{{HOMEPAGE_VAR_NTOPNG_PASS}}"
 
 ### --------------------- ###
 ### ------ Row 4: Cloud -------- ###
@@ -248,12 +266,12 @@
             url: "http://{{HOMEPAGE_VAR_JUPITER_IP}}:9696"
             key: "{{HOMEPAGE_VAR_PROWLARR_TOKEN}}"
             # Allowed fields: ["numberOfGrabs", "numberOfQueries", "numberOfFailGrabs", "numberOfFailQueries"].
-    - Overseerr: 
+    - Seerr: 
         icon: overseerr.svg
         href: "http://{{HOMEPAGE_VAR_JUPITER_IP}}:5055"
         description: Arr Request Manager
         widget: 
-            type: overseerr
+            type: seerr
             url: "http://{{HOMEPAGE_VAR_JUPITER_IP}}:5055"
             key: "{{HOMEPAGE_VAR_OVERSEER_TOKEN}}"
             # Allowed fields: ["pending", "approved", "available", "processing"].    
@@ -287,4 +305,7 @@
         icon: convertx.png
         href: "http://{{HOMEPAGE_VAR_JUPITER_IP}}:3002"
         description: File Converter
-    
+    - Ollama: 
+        icon: ollama.png
+        href: "http://ai.{{HOMEPAGE_VAR_URLBASE}}"
+        description: AI Models
