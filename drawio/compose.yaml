@@ -7,3 +7,4 @@ services:
         container_name: drawio
         tty: true
         stdin_open: true
+

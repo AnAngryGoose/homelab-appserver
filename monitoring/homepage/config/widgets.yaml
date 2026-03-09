@@ -8,7 +8,7 @@
 
 # System Stats (Powered by Glances container)
 - glances:
-    url: http://10.10.30.20:61208
+    url: http://prod-deb-01.internal:61208
     label: prod-deb-01
     cpu: true
     mem: true

@@ -112,7 +112,7 @@
         container: uptime-kuma
         widget:
             type: uptimekuma
-            url: "http://{{HOMEPAGE_VAR_prod-deb-01_IP}}"
+            url: "http://{{HOMEPAGE_VAR_prod-deb-01_IP}}:3001"
             slug: prod-deb-01
             
         
@@ -156,7 +156,7 @@
         description: OPNSense 
         widget:
           type: opnsense
-          url: https://192.168.0.1:4043/"
+          url: "https://192.168.0.1:4043/"
           username: "{{HOMEPAGE_VAR_OPNSENSE_USER}}"
           password: "{{HOMEPAGE_VAR_OPNSENSE_PASS}}"
           wan: opt1 # optional, defaults to wan
@@ -271,7 +271,7 @@
         href: "http://{{HOMEPAGE_VAR_JUPITER_IP}}:5055"
         description: Arr Request Manager
         widget: 
-            type: seerr
+            type: overseerr
             url: "http://{{HOMEPAGE_VAR_JUPITER_IP}}:5055"
             key: "{{HOMEPAGE_VAR_OVERSEER_TOKEN}}"
             # Allowed fields: ["pending", "approved", "available", "processing"].    
@@ -295,15 +295,15 @@
 - Tools:
     - it-tools: 
         icon: it-tools.svg
-        href: "http://{{HOMEPAGE_VAR_JUPITER_IP}}:8071"
+        href: "http://{{HOMEPAGE_VAR_prod-deb-01_IP}}:8071"
         description: Developer & IT utilities
     - bentopdf: 
         icon: bentopdf.png
-        href: "http://{{HOMEPAGE_VAR_JUPITER_IP}}:3005"
+        href: "http://{{HOMEPAGE_VAR_prod-deb-01_IP}}:3005"
         description: PDF tools
     - convertx: 
         icon: convertx.png
-        href: "http://{{HOMEPAGE_VAR_JUPITER_IP}}:3002"
+        href: "http://{{HOMEPAGE_VAR_prod-deb-01_IP}}:3002"
         description: File Converter
     - Ollama: 
         icon: ollama.png

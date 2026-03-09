@@ -18,9 +18,11 @@ services:
   bentopdf:
     image: bentopdf/bentopdf-simple:latest
     container_name: bentopdf
-    ports:
-      - '3005:8080'
+   # ports: # exposed via cloudflare - not host ports
+    #  - '3005:8080'
     restart: unless-stopped
+    networks:
+      - tunnel-net
 
 
 ### --- ConvertX --- ### https://github.com/C4illin/ConvertX
@@ -35,20 +37,7 @@ services:
       # - HTTP_ALLOWED=true # uncomment this if accessing it over a non-https connection
     volumes:
       - /mnt/appdata/convertx/data:/app/data # database files - SQLite 
-    networks:
-      - tunnel-net
-      
 
-  cloudflared:
-    image: cloudflare/cloudflared:latest
-    container_name: cloudflared
-    restart: unless-stopped
-    environment:
-      - TUNNEL_TOKEN=${CLOUDFLARE_TOKEN}
-    command: tunnel --no-autoupdate run
-    networks:
-      - tunnel-net
-      
 networks:
   tunnel-net:
-    name: tunnel-net
+    external: true

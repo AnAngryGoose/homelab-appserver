@@ -6,6 +6,8 @@ services:
     image: ghcr.io/gethomepage/homepage:latest # https://github.com/gethomepage/homepage
     container_name: homepage
     restart: unless-stopped
+    dns:
+      - 10.10.30.1
     environment:
       # This is added to allow access and provide exception to only default values
       - HOMEPAGE_ALLOWED_HOSTS=${HOMEPAGE_ALLOWED_HOSTS}
@@ -118,7 +120,7 @@ services:
     ports:
       - "8090:8090"   # Exposed locally for initial setup
     environment:
-      - APP_URL=https://beszel.vanth.me
+      - APP_URL=https://beszel.vanth.internal
     volumes:
       - ./beszel/hub-data:/beszel_data
     restart: unless-stopped
@@ -147,7 +149,7 @@ services:
     environment:
       - PORT=45876
       - KEY=${BESZEL_KEY} 
-      - HUB_URL=https://beszel.vanth.me
+      - HUB_URL=https://beszel.vanth.internal
       - TOKEN=${BESZEL_TOKEN} # permanent token generated from hub
 networks:
   beszel_net:
