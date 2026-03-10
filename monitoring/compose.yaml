@@ -72,7 +72,7 @@ services:
   dozzle:
     image: amir20/dozzle:latest # https://github.com/amir20/dozzle
     container_name: dozzle
-    command: --remote-agent 192.168.0.11:7007 # connect to remote agent
+    command: --remote-agent http://jupiter.internal:7007 # connect to remote agent
     ports:
       - "8081:8080" # Web UI on port 8081
     volumes:
@@ -94,8 +94,8 @@ services:
   uptime-kuma:
     image: louislam/uptime-kuma:2 # Latest version - https://github.com/louislam/uptime-kuma
     container_name: uptime-kuma
-    dns:
-      - 9.9.9.9
+    #dns:
+    #  - 9.9.9.9
     # networks:
     #   - proxy_net  # To access via NPM
     volumes:
@@ -147,10 +147,10 @@ services:
       - /mnt/sda:/extra-filesystems/sda__appdata:ro
       - /mnt/nvme0n1:/extra-filesystems/nvme0n1__rootdrive:ro
     environment:
-      - PORT=45876
-      - KEY=${BESZEL_KEY} 
-      - HUB_URL=https://beszel.vanth.internal
-      - TOKEN=${BESZEL_TOKEN} # permanent token generated from hub
+      - PORT: 45876
+      - KEY: ${BESZEL_KEY} 
+      - HUB_URL: https://beszel.vanth.internal
+      - TOKEN: ${BESZEL_TOKEN} # permanent token generated from hub
 networks:
   beszel_net:
     driver: bridge

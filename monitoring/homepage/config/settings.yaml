@@ -36,7 +36,7 @@ layout:
     columns: 4
 
   # ---- Page 2 - Machines Overview ----
-  Mercury:
+  prod-deb-01:
     tab: Machines
     style: column
     columns: 1

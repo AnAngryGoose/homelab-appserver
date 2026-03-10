@@ -25,8 +25,8 @@ services:
     ports:
       - 3000:3000
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin  # Change this
+      - GF_SECURITY_ADMIN_USER: admin
+      - GF_SECURITY_ADMIN_PASSWORD: ${GF_ADMIN_PASSWORD}
       - GF_USERS_ALLOW_SIGN_UP=false
 
  ### --- Node Exporter -- Host System Metrics --- ##
@@ -62,8 +62,8 @@ services:
       #- --exporter.disable-cron-table
       #- ....
     environment:
-      OPNSENSE_EXPORTER_OPS_API_KEY: "yF/k58861erpqRRxdX0zhcPyOhEC6nRhS9mdYGXU3qklyKj5pQW9De+0ZEl7PXkyNPmO7zkuzmHAr0NM"
-      OPNSENSE_EXPORTER_OPS_API_SECRET: "5QpaSbd7NjIcBKeIWcb3V8Gb+WZB7MCJpltXViBXaBFWTUEAdITZhteQLeaSE5KtDaPJ68CVbaIID1Ja"
+      OPNSENSE_EXPORTER_OPS_API_KEY: ${OPNSENSE_API_KEY}
+      OPNSENSE_EXPORTER_OPS_API_SECRET: ${OPNSENSE_API_SECRET}
     ports:
       - "9200:9200"
   ### --- cAdvisor: Container Metrics --- ##

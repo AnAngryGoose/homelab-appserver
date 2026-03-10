@@ -85,15 +85,6 @@
             url: "http://prod-deb-01.internal:81"
             username: "{{HOMEPAGE_VAR_NPM_USER}}"
             password: "{{HOMEPAGE_VAR_NPM_PASS}}"
-    - Backrest:
-        icon: backrest.png
-        href: "http://backrest.{{HOMEPAGE_VAR_URLBASE}}"
-        description: Backup Manager
-        widget:
-            type: backrest
-            url: http://backrest.{{HOMEPAGE_VAR_URLBASE}}
-            # username: "{{HOMEPAGE_VAR_BACKREST_USER}}"
-            # password: "{{HOMEPAGE_VAR_BACKREST_PASS}}"
 # -------------------------
 # --- ROW 2: MONITORING ---
 # -------------------------
@@ -152,11 +143,11 @@
 - Networking:
     - OPNSense :
         icon: opnsense.svg
-        href: "https://192.168.0.1:4043/"
+        href: "https://opnsense.internal:4043/"
         description: OPNSense 
         widget:
           type: opnsense
-          url: "https://192.168.0.1:4043/"
+          url: "https://opnsense.internal:4043/"
           username: "{{HOMEPAGE_VAR_OPNSENSE_USER}}"
           password: "{{HOMEPAGE_VAR_OPNSENSE_PASS}}"
           wan: opt1 # optional, defaults to wan
