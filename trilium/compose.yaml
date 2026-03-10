@@ -1,0 +1,21 @@
+services:
+  trilium:
+    image: triliumnext/trilium:stable
+    container_name: trilium
+    restart: unless-stopped
+    dns:
+      - 10.10.30.1
+    environment:
+      - TRILIUM_DATA_DIR=/home/node/trilium-data
+      - USER_UID=1000
+      - USER_GID=1000
+    volumes:
+      - /mnt/appdata/trilium:/home/node/trilium-data
+    ports:
+      - "8070:8080"
+    networks:
+      - tunnel-net
+
+networks:
+  tunnel-net:
+    external: true
